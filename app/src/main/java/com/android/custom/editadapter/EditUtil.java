@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
  * @CreateDate: 2020/11/12 9:48
  */
 public class EditUtil {
-    public static void changeViewHeight(final Activity activity, final EditText editText, final ViewGroup viewGroup) {
+    public static void changeViewHeight(final Activity activity, final EditText editText, final ViewGroup viewGroup, final int id) {
         final RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) viewGroup.getLayoutParams();
         final int height = layoutParams.height;
         editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -35,13 +35,14 @@ public class EditUtil {
                             int screenHeight = activity.getWindow().getDecorView().getRootView().getHeight();
                             //此处就是用来获取键盘的高度的， 在键盘没有弹出的时候 此高度为0 键盘弹出的时候为一个正数
                             int heightDifference = screenHeight - r.bottom;
-                            Log.e("height", heightDifference + "");
                             if (heightDifference > 0) {
                                 if (heightDifference > height) {
+                                    layoutParams.removeRule(RelativeLayout.BELOW);
+                                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                                     layoutParams.height = heightDifference + 30;
                                     viewGroup.setLayoutParams(layoutParams);
                                 } else {
-                                    layoutParams.height = height;
+                                    layoutParams.addRule(RelativeLayout.BELOW, id);
                                     viewGroup.setLayoutParams(layoutParams);
                                 }
                             }
